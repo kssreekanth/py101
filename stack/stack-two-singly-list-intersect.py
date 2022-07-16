@@ -1,13 +1,37 @@
+class stack:
+    def __init__(self, limit):
+        self.limit = limit
+        self.data = []
+
+    def push(self, value):
+        if self.is_full():
+            print("Overflow Exception")
+            return
+        self.data.append(value)
+
+    def pop(self):
+        if self.is_empty():
+            print("Underflow Exception")
+            return
+        return self.data.pop()
+
+    def is_full(self):
+        return len(self.data) == self.limit
+
+    def is_empty(self):
+        return len(self.data) == 0
+
+
 class node:
-    def __init__(self):
-        self.data = None
+    def __init__(self, value):
+        self.value = value
         self.next = None
 
-    def get_data(self):
-        return self.data
+    def get_value(self):
+        return self.value
 
-    def set_data(self, value):
-        self.data = value
+    def set_value(self, value):
+        self.value = value
 
     def get_next(self):
         return self.next
@@ -16,10 +40,13 @@ class node:
         self.next = node
 
 
-class singly_linked_list:
+class linked_list:
     def __init__(self):
         self.head = None
         self.length = 0
+
+    def get_head(self):
+        return self.head
 
     def set_head(self, node):
         if self.length == 0:
@@ -31,64 +58,71 @@ class singly_linked_list:
 
 
 def find_intersection(ll1, ll2):
-    diff = ll1.length - ll2.length
-    if diff >= 0:
-        first = ll1
-        second = ll2
-    else:
-        first = ll2
-        second = ll1
+    if ll1 is None or ll2 is None:
+        return
 
-    first_pointer = first.head
-    index = 0
-    while first_pointer is not None and index != diff:
-        first_pointer = first_pointer.get_next()
-        index = index + 1
+    stk1 = stack(20)
+    stk2 = stack(20)
 
-    second_pointer = second.head
-    while first_pointer != second_pointer:
-        first_pointer = first_pointer.get_next()
-        second_pointer = second_pointer.get_next()
+    current1 = ll1.get_head()
+    while current1 is not None:
+        stk1.push(current1)
+        current1 = current1.get_next()
 
-    return first_pointer
+    current2 = ll2.get_head()
+    while current2 is not None:
+        stk2.push(current2)
+        current2 = current2.get_next()
+
+    pop1 = stk1.pop()
+    pop2 = stk2.pop()
+
+    while pop1 is pop2:
+        pop1 = stk1.pop()
+        pop2 = stk2.pop()
+
+    print(pop1.get_value())
+    print(pop2.get_value())
 
 
-def find_intersection_stack():
-    print("God")
+n10 = node(10)
+n11 = node(11)
+n12 = node(12)
+n13 = node(13)
+n14 = node(14)
+n10.set_next(n11)
+n11.set_next(n12)
+n12.set_next(n13)
+n13.set_next(n14)
 
-i1 = node()
-i2 = node()
-i3 = node()
-i1.set_next(i2)
-i2.set_next(i3)
+n20 = node(20)
+n21 = node(21)
+n22 = node(22)
+n23 = node(23)
+n24 = node(24)
+n20.set_next(n21)
+n21.set_next(n22)
+n22.set_next(n23)
+n23.set_next(n24)
 
-n1 = node()
-n2 = node()
-n3 = node()
-n4 = node()
-n5 = node()
+n30 = node(30)
+n31 = node(31)
+n32 = node(32)
+n33 = node(33)
+n34 = node(34)
+n30.set_next(n31)
+n31.set_next(n32)
+n32.set_next(n33)
+n33.set_next(n34)
 
-n1.set_next(n2)
-n2.set_next(n3)
-n3.set_next(n4)
-n4.set_next(n5)
-n5.set_next(i1)
-ddl1 = singly_linked_list()
-ddl1.set_head(n1)
+n14.set_next(n30)
+n24.set_next(n30)
 
-m1 = node()
-m2 = node()
-m3 = node()
-m4 = node()
-m5 = node()
+ll1 = linked_list()
+ll1.set_head(n10)
 
-m1.set_next(m2)
-m2.set_next(m3)
-m3.set_next(m4)
-m4.set_next(m5)
-m5.set_next(i1)
-ddl2 = singly_linked_list()
-ddl2.set_head(m1)
+ll2 = linked_list()
+ll2.set_head(n20)
 
-resul = find_intersection(ddl1, ddl2)
-print(resul)
+print(n34)
+find_intersection(ll1, ll2)
